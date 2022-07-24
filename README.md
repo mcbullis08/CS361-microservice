@@ -1,3 +1,5 @@
+*Communication Contract:
+
 Hello, my name is Jeremy Bullis and contained inside this GitHub repository
 is the code required for my microservice for CS-361. As well as my communication
 contract for my partner and a UML diagram showing how the program will function.
@@ -18,10 +20,17 @@ a containing all this information but formatted just a little differently.
 At this point the program will finally write the generated output list to a text file
 to be used again in the larger user program. It will end without any user input needed
 
-Please refer to the Micro-UML for a visual aid
+Please refer to the Micro-UML.jpg for a visual aid
 
+*REQUESTING DATA:
+To request data, run the MicroTides.py file while having a valid date_range.txt file in 
+the same system folder. (Alternately you can alter the path to where this file might be
+located)
 
-
-*Communication Contract:
+*RECEIVING DATA:
+Once the program MicroTides.py has run to completion your data will be available for use
+located in the text file tide_info.txt. It is formatted by day, with the time, high or
+low tide, and the height. This information can then be used by the user in any way they see
+fit.
 
 
