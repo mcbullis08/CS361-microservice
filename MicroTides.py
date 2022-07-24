@@ -71,24 +71,26 @@ def get_todays_tides():
 
 
 def display_tide_data(data):
-    # function to display the tide date for the user
+    # function to display the tide date and write it to a text file
 
-    output = []
+    output = []                                                         # create hold for data display
+
     for entry in data['predictions']:
-        date, time = entry['t'].split()
-        if entry['type'] == 'H':
+        date, time = entry['t'].split()                                 # split time and date for display
+        if entry['type'] == 'H':                                        # high tides
             if any(date in sublist for sublist in output):
                 output.append([time, 'High: ', entry['v']+' ft'])
             else:
-                output.append([date])
-                output.append([ time, 'High: ', entry['v'] + ' ft'])
-        elif entry['type'] == 'L':
+                output.append([date])                                   # add new row if date is different
+                output.append([time, 'High: ', entry['v'] + ' ft'])
+        elif entry['type'] == 'L':                                      # low tides
             date, time = entry['t'].split()
             if any(date in sublist for sublist in output):
                 output.append([time, 'Low:  ', entry['v'] + ' ft'])
             else:
-                output.append([date])
+                output.append([date])                                   # add new row if date is different
                 output.append([time, 'Low:  ', entry['v'] + ' ft'])
+
 
     with open(write_txt_path, 'w') as f:
         for sub_list in output:
@@ -100,8 +102,6 @@ def display_tide_data(data):
 def main():
 
     dates = get_user_date_range()
-
-    print(dates)
 
     if len(dates) > 1:
         data = get_tide_range(dates[0], dates[1])
