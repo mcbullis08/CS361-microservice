@@ -14,6 +14,8 @@
 
 
 import requests
+import time
+import json
 
 read_path = 'date_range.txt'
 write_txt_path = 'tide_info.txt'
@@ -70,45 +72,24 @@ def get_todays_tides():
     return station
 
 
-def display_tide_data(data):
-    # function to display the tide date and write it to a text file
-
-    output = []                                                         # create hold for data display
-
-    for entry in data['predictions']:
-        date, time = entry['t'].split()                                 # split time and date for display
-        if entry['type'] == 'H':                                        # high tides
-            if any(date in sublist for sublist in output):
-                output.append([time, 'High: ', entry['v']+' ft'])
-            else:
-                output.append([date])                                   # add new row if date is different
-                output.append([time, 'High: ', entry['v'] + ' ft'])
-        elif entry['type'] == 'L':                                      # low tides
-            date, time = entry['t'].split()
-            if any(date in sublist for sublist in output):
-                output.append([time, 'Low:  ', entry['v'] + ' ft'])
-            else:
-                output.append([date])                                   # add new row if date is different
-                output.append([time, 'Low:  ', entry['v'] + ' ft'])
-
-
-    with open(write_txt_path, 'w') as f:
-        for sub_list in output:
-            for item in sub_list:
-                f.write(str(item) + ' ')
-            f.write('\n')
-
-
 def main():
 
-    dates = get_user_date_range()
+    while True:
 
-    if len(dates) > 1:
-        data = get_tide_range(dates[0], dates[1])
-    else:
-        data = get_todays_tides()
+        time.sleep(1)
 
-    display_tide_data(data)
+        dates = get_user_date_range()
+
+        if len(dates) > 1:
+            data = get_tide_range(dates[0], dates[1])
+            with open(write_txt_path, 'w') as outfile:
+                json.dump(data, outfile)
+                outfile.close()
+        else:
+            data = get_todays_tides()
+            with open(write_txt_path, 'w') as outfile:
+                json.dump(data, outfile)
+                outfile.close()
 
 
 if __name__ == "__main__":
